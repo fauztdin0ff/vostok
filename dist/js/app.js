@@ -215,6 +215,34 @@ _modules_functions_js__WEBPACK_IMPORTED_MODULE_0__.popups();
 _modules_functions_js__WEBPACK_IMPORTED_MODULE_0__.phoneMask();
 
 /*==========================================================================
+Observer Animation
+============================================================================*/
+if (document.readyState === "complete") {
+   init();
+} else {
+   window.addEventListener("load", init);
+}
+
+function init() {
+   function onEntry(entry) {
+      entry.forEach(change => {
+         if (change.isIntersecting) {
+            change.target.classList.add('element-show');
+         }
+      });
+   }
+
+   let options = { threshold: [0.4] };
+   let observer = new IntersectionObserver(onEntry, options);
+   let elements = document.querySelectorAll('.element-animation');
+   for (let elm of elements) {
+      observer.observe(elm);
+   }
+}
+
+
+
+/*==========================================================================
 Lang panel
 ============================================================================*/
 document.addEventListener('DOMContentLoaded', () => {
@@ -255,6 +283,109 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    });
 });
+
+/*==========================================================================
+Header image anim
+============================================================================*/
+const headerImage = document.querySelector('.header__image svg');
+let lastScrollY = 0;
+let ticking = false;
+
+function rotateHeader() {
+   const rotation = lastScrollY * 0.3;
+   headerImage.style.transform = `rotate(${rotation}deg)`;
+   ticking = false;
+}
+
+window.addEventListener('scroll', () => {
+   lastScrollY = window.scrollY;
+   if (!ticking) {
+      window.requestAnimationFrame(rotateHeader);
+      ticking = true;
+   }
+});
+
+
+
+/*==========================================================================
+Hero anim
+============================================================================*/
+document.addEventListener('DOMContentLoaded', () => {
+   const wrapper = document.querySelector('.hero__title-wrapper');
+   const words = document.querySelectorAll('.hero__title-word');
+   const illustrations = document.querySelectorAll('.hero__card-illustration');
+   const container = document.querySelector('.hero__title-words');
+   let index = 0;
+   const duration = 3000;
+
+   function showWord(i) {
+      const wordHeight = container.offsetHeight;
+      wrapper.style.transform = `translateY(-${i * wordHeight}px)`;
+      words.forEach((word, idx) => word.classList.toggle('active', idx === i));
+      illustrations.forEach((img, idx) => img.classList.toggle('active', idx === i));
+   }
+
+   showWord(index);
+
+   setInterval(() => {
+      index = (index + 1) % words.length;
+      showWord(index);
+   }, duration);
+
+   window.addEventListener('resize', () => {
+      showWord(index);
+   });
+});
+
+
+/*==========================================================================
+Portfolio case 
+============================================================================*/
+document.addEventListener('DOMContentLoaded', () => {
+   const cases = document.querySelectorAll('.case');
+
+   if (window.innerWidth < 768 && cases.length > 0) {
+      cases[0].classList.add('active');
+   }
+
+   cases.forEach(caseItem => {
+      caseItem.addEventListener('click', (e) => {
+         if (e.target.closest('.case__toggle')) return;
+
+         if (caseItem.classList.contains('active')) {
+            caseItem.classList.remove('active');
+            return;
+         }
+
+         cases.forEach(item => item.classList.remove('active'));
+         caseItem.classList.add('active');
+      });
+   });
+});
+
+
+/*==========================================================================
+Reviews slider
+============================================================================*/
+const reviewsSlider = document.querySelector(".reviews__slider");
+
+if (reviewsSlider) {
+   const reviewsSwiper = new Swiper(reviewsSlider, {
+      slidesPerView: 1,
+      loop: true,
+      freeMode: false,
+      parallax: true,
+      speed: 800,
+      pagination: {
+         el: ".reviews__slider-pagination",
+         clickable: true,
+      },
+      navigation: {
+         nextEl: ".reviews__slide-next",
+         prevEl: ".reviews__slide-prev",
+      },
+   });
+}
 
 })();
 
