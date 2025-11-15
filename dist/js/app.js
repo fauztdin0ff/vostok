@@ -232,7 +232,7 @@ function init() {
       });
    }
 
-   let options = { threshold: [0.4] };
+   let options = { threshold: [0.0] };
    let observer = new IntersectionObserver(onEntry, options);
    let elements = document.querySelectorAll('.element-animation');
    for (let elm of elements) {
@@ -315,19 +315,30 @@ document.addEventListener('DOMContentLoaded', () => {
    const words = document.querySelectorAll('.hero__title-word');
    const illustrations = document.querySelectorAll('.hero__card-illustration');
    const container = document.querySelector('.hero__title-words');
+
+   if (!wrapper || !container || !words.length || !illustrations.length) {
+      return;
+   }
+
    let index = 0;
    const duration = 3000;
 
    function showWord(i) {
       const wordHeight = container.offsetHeight;
       wrapper.style.transform = `translateY(-${i * wordHeight}px)`;
-      words.forEach((word, idx) => word.classList.toggle('active', idx === i));
-      illustrations.forEach((img, idx) => img.classList.toggle('active', idx === i));
+
+      words.forEach((word, idx) => {
+         word.classList.toggle('active', idx === i);
+      });
+
+      illustrations.forEach((img, idx) => {
+         img.classList.toggle('active', idx === i);
+      });
    }
 
    showWord(index);
 
-   setInterval(() => {
+   const interval = setInterval(() => {
       index = (index + 1) % words.length;
       showWord(index);
    }, duration);
@@ -336,6 +347,7 @@ document.addEventListener('DOMContentLoaded', () => {
       showWord(index);
    });
 });
+
 
 
 /*==========================================================================
@@ -386,6 +398,192 @@ if (reviewsSlider) {
       },
    });
 }
+
+
+/*==========================================================================
+principles slider
+============================================================================*/
+/* const principlesSlider = document.querySelector(".principles__slider");
+
+if (principlesSlider) {
+   const principlesSwiper = new Swiper(principlesSlider, {
+      slidesPerView: 3,
+      freeMode: true,
+      spaceBetween: 10,
+      simulateTouch: false,
+      slideToClickedSlide: false,
+      watchOverflow: true,
+      speed: 5000,
+      autoplay: {
+         delay: 0,
+         disableOnInteraction: false,
+      },
+      breakpoints: {
+         320: {
+            slidesPerView: 1.33,
+            loop: true,
+         },
+         767: {
+            slidesPerView: 3,
+            loop: false,
+         }
+      },
+   });
+}
+ */
+
+
+/*==========================================================================
+Advantages hover
+============================================================================*/
+document.addEventListener("DOMContentLoaded", () => {
+   const container = document.querySelector(".about__advantages");
+   const items = document.querySelectorAll(".about__advantage");
+
+   // Проверка на наличие контейнера и элементов
+   if (!container || !items.length) return;
+
+   // создаём динамическую плашку
+   const hoverBg = document.createElement("div");
+   hoverBg.className = "about__hover-bg";
+   container.appendChild(hoverBg);
+
+   let mode = null;
+   let scrollObserver = null;
+
+   // ---------------------------
+   // ФУНКЦИЯ: Заливка первого элемента по умолчанию
+   // ---------------------------
+   function activateFirst() {
+      const first = items[0];
+      if (!first) return;
+
+      items.forEach(i => {
+         i.classList.remove("active");
+         i.classList.remove("prev-hover");
+      });
+
+      first.classList.add("active");
+
+      const rect = first.getBoundingClientRect();
+      const parent = container.getBoundingClientRect();
+
+      hoverBg.style.top = rect.top - parent.top + "px";
+      hoverBg.style.height = rect.height + "px";
+      hoverBg.style.opacity = 1;
+   }
+
+   // ---------------------------
+   // MODE 1 — Desktop >= 980px
+   // ---------------------------
+   function enableHoverMode() {
+      if (mode === "hover") return;
+      mode = "hover";
+
+      if (scrollObserver) {
+         scrollObserver.disconnect();
+         scrollObserver = null;
+      }
+
+      items.forEach(item => {
+         item.removeEventListener("mouseenter", mouseEnterHandler);
+      });
+      items.forEach(item => {
+         item.addEventListener("mouseenter", mouseEnterHandler);
+      });
+      activateFirst();
+   }
+
+   function mouseEnterHandler(e) {
+      if (mode !== "hover") return;
+
+      const item = e.currentTarget;
+      const rect = item.getBoundingClientRect();
+      const parent = container.getBoundingClientRect();
+
+      hoverBg.style.top = rect.top - parent.top + "px";
+      hoverBg.style.height = rect.height + "px";
+      hoverBg.style.opacity = 1;
+
+      items.forEach(i => {
+         i.classList.remove("active");
+         i.classList.remove("prev-hover");
+      });
+
+      item.classList.add("active");
+
+      const prev = item.previousElementSibling;
+      if (prev) {
+         prev.classList.add("prev-hover");
+      }
+   }
+
+   // ---------------------------
+   // MODE 2 — Mobile < 980px
+   // ---------------------------
+   function enableScrollMode() {
+      if (mode === "scroll") return;
+
+      mode = "scroll";
+
+      items.forEach(item => {
+         item.removeEventListener("mouseenter", mouseEnterHandler);
+      });
+
+      items.forEach(item => {
+         item.classList.remove("active");
+         item.classList.remove("prev-hover");
+      });
+
+      const linePercent = 0.60;
+
+      scrollObserver = new IntersectionObserver(
+         (entries) => {
+            entries.forEach(entry => {
+               if (entry.isIntersecting) {
+                  const item = entry.target;
+                  items.forEach(i => {
+                     i.classList.remove("active");
+                     i.classList.remove("prev-hover");
+                  });
+                  item.classList.add("active");
+                  const prev = item.previousElementSibling;
+                  if (prev) {
+                     prev.classList.add("prev-hover");
+                  }
+                  const rect = item.getBoundingClientRect();
+                  const parent = container.getBoundingClientRect();
+
+                  hoverBg.style.top = rect.top - parent.top + "px";
+                  hoverBg.style.height = rect.height + "px";
+                  hoverBg.style.opacity = 1;
+               }
+            });
+         },
+         {
+            threshold: 0,
+            rootMargin: `-${linePercent * 100}% 0px -${(1 - linePercent) * 100}% 0px`
+         }
+      );
+
+      items.forEach(item => scrollObserver.observe(item));
+      activateFirst();
+   }
+
+   // ---------------------------
+   // MODE SWITCHER
+   // ---------------------------
+   function checkMode() {
+      if (window.innerWidth >= 980) {
+         enableHoverMode();
+      } else {
+         enableScrollMode();
+      }
+   }
+
+   checkMode();
+   window.addEventListener("resize", checkMode);
+});
 
 })();
 
