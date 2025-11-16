@@ -1342,17 +1342,18 @@ Team section
   gap: 1rem;
   transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0s;
   cursor: pointer;
+  overflow: hidden;
 }
 @media (width > 767px) and (hover: hover) {
   .case:hover {
     background-color: var(--card-hover-color);
   }
   .case:hover .case__info {
-    max-height: 0;
+    transform: translateX(calc(-100% - 40px));
     transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0s;
   }
   .case:hover .case__details {
-    max-height: 144px;
+    transform: translateX(-100%);
     transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0.4s;
   }
   .case:hover .case__logo {
@@ -1447,9 +1448,11 @@ Team section
     display: flex;
   }
 }
-.case__body {
-  display: flex;
-  flex-direction: column;
+@media (width >= 48rem) {
+  .case__body {
+    display: flex;
+    align-items: flex-end;
+  }
 }
 @media (width < 47.9375rem) {
   .case__body {
@@ -1461,9 +1464,9 @@ Team section
   }
 }
 .case__info {
+  flex: 0 0 100%;
   transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0.4s;
   overflow: hidden;
-  max-height: 86px;
 }
 @media (width < 47.9375rem) {
   .case__info {
@@ -1491,13 +1494,21 @@ Team section
   font-size: 0.875rem;
   line-height: 140%;
 }
+@media (width < 47.9375rem) {
+  .case__description {
+    will-change: transform;
+  }
+}
 .case__details {
-  max-height: 0;
+  flex: 0 0 100%;
+  transform: translateX(40px);
   overflow: hidden;
   transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0s;
 }
 @media (width < 47.9375rem) {
   .case__details {
+    flex: 1 1 auto;
+    transform: none;
     max-height: unset;
     overflow: unset;
     margin-top: auto;
@@ -2206,17 +2217,17 @@ About
   border-top: 1px solid rgba(0, 0, 0, 0.15);
 }
 .about__advantage.prev-hover {
-  border-color: var(--color-secondary);
+  border-color: transparent;
 }
 .about__advantage.active {
-  border-color: var(--color-secondary);
+  border-color: transparent;
 }
 .about__advantage.active .about__advantage-num::before {
   transform: rotate(180deg) translateY(50%);
 }
 @media (hover: hover) {
   .about__advantage:hover {
-    border-color: var(--color-secondary);
+    border-color: transparent;
   }
   .about__advantage:hover .about__advantage-num::before {
     transform: rotate(180deg) translateY(50%);
@@ -2287,4 +2298,346 @@ About
   pointer-events: none;
   opacity: 0;
   z-index: 1;
+}
+
+/*==========================================================================
+Team
+============================================================================*/
+.team__title {
+  padding: 9rem 0 4rem;
+  text-align: center;
+}
+@media (width < 61.25rem) {
+  .team__title {
+    font-size: 3.75rem;
+  }
+}
+@media (width < 47.9375rem) {
+  .team__title {
+    font-size: 2.25rem;
+    padding: 5rem 1.5rem 3.5rem;
+    text-align: left;
+  }
+}
+.team__about {
+  padding: 7.5rem 0 10rem;
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+@media (width < 61.25rem) {
+  .team__about {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 5rem 2.25rem;
+    gap: 1.5rem;
+  }
+}
+@media (width < 61.25rem) {
+  .team__about {
+    padding: 5rem 1.5rem;
+  }
+}
+.team__subtitle {
+  flex: 0 1 50%;
+}
+.team__subtitle .border-line.element-animation.element-show::before {
+  transition-delay: 2s;
+}
+.team__subtitle.element-animation {
+  clip-path: inset(0% 100% 0% 0%);
+  transition: clip-path 1.8s cubic-bezier(0.8, 0, 0, 0.8) 0.4s;
+}
+.team__subtitle.element-animation.element-show {
+  clip-path: inset(0% 0% 0% 0%);
+}
+.team__description {
+  flex: 0 1 50%;
+  font-size: 1.5rem;
+  line-height: 120%;
+}
+.team__description.element-animation {
+  clip-path: inset(0% 100% 0% 0%);
+  transition: clip-path 1.8s cubic-bezier(0.8, 0, 0, 0.8) 0.4s;
+}
+.team__description.element-animation.element-show {
+  clip-path: inset(0% 0% 0% 0%);
+}
+@media (width < 61.25rem) {
+  .team__description {
+    font-size: 1.25rem;
+  }
+}
+@media (width < 47.9375rem) {
+  .team__description {
+    font-size: 1.125rem;
+  }
+}
+
+/*==========================================================================
+Team advantages
+============================================================================*/
+.team-adv__body {
+  background: #fff;
+  padding: 5rem;
+  display: flex;
+  align-items: center;
+  gap: 5rem;
+}
+@media (width < 61.25rem) {
+  .team-adv__body {
+    padding: 3.5rem 2.125rem;
+    gap: 1.125rem;
+  }
+}
+@media (width < 47.9375rem) {
+  .team-adv__body {
+    flex-direction: column;
+    gap: 2.25rem;
+    align-items: stretch;
+    padding: 3.5rem 1.5rem;
+  }
+}
+.team-adv__info {
+  flex: 0 1 50%;
+}
+.team-adv__title {
+  font-size: 1.5rem;
+  line-height: 120%;
+  margin-bottom: 1rem;
+  font-weight: 400;
+}
+@media (width < 61.25rem) {
+  .team-adv__title {
+    font-size: 1.25rem;
+  }
+}
+@media (width < 47.9375rem) {
+  .team-adv__title {
+    font-size: 1.125rem;
+  }
+}
+.team-adv__description {
+  font-size: 0.875rem;
+  line-height: 140%;
+  max-width: 30.0625rem;
+}
+.team-adv__items {
+  flex: 0 1 50%;
+}
+.team-adv__item {
+  padding: 2.25rem 0;
+  font-size: 0.875rem;
+  line-height: 140%;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+.team-adv__item:first-child {
+  padding-top: 0;
+}
+.team-adv__item i {
+  font-style: normal;
+}
+.team-adv__item span {
+  display: block;
+  font-size: 5.625rem;
+  line-height: 1;
+  font-weight: 400;
+  margin-bottom: 1.125rem;
+  white-space: nowrap;
+}
+@media (width < 61.25rem) {
+  .team-adv__item {
+    padding: 1.25rem;
+  }
+  .team-adv__item:first-child {
+    padding-top: 0;
+  }
+  .team-adv__item span {
+    font-size: 3rem;
+  }
+}
+@media (width < 47.9375rem) {
+  .team-adv__item {
+    padding: 1.25rem 0;
+  }
+  .team-adv__item:first-child {
+    padding-top: 0;
+  }
+  .team-adv__item span {
+    font-size: 2.25rem;
+    margin-bottom: 1rem;
+  }
+}
+
+/*==========================================================================
+Teammates
+============================================================================*/
+.teammates__body {
+  padding: 5rem 0;
+}
+.teammates__grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.625rem;
+}
+@media (width < 75rem) {
+  .teammates__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+@media (width < 61.25rem) {
+  .teammates__grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (width < 47.9375rem) {
+  .teammates__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.teammate {
+  background: var(--color-secondary);
+  min-height: 22.375rem;
+  display: flex;
+  flex-direction: column;
+}
+@media (width < 61.25rem) {
+  .teammate {
+    min-height: 25.625rem;
+  }
+}
+@media (width < 47.9375rem) {
+  .teammate {
+    min-height: unset;
+    /*  background: transparent; */
+  }
+}
+.teammate__head {
+  padding: 1.125rem;
+  background: #f2f2f2;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.25rem;
+}
+@media (width < 47.9375rem) {
+  .teammate__head {
+    padding: 1.5rem;
+    background: transparent;
+  }
+}
+.teammate__names {
+  font-size: 0.875rem;
+  line-height: 140%;
+  font-weight: 400;
+}
+.teammate__toggle {
+  width: 0.625rem;
+  height: 0.625rem;
+  color: #000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.teammate__toggle svg {
+  width: 100%;
+  height: 100%;
+}
+.teammate__body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 1.5rem;
+}
+@media (width < 47.9375rem) {
+  .teammate__body {
+    padding: 0 0 1.5rem 1.5rem;
+    align-items: flex-start;
+    text-align: left;
+    overflow: hidden;
+  }
+}
+.teammate__contacts {
+  display: none;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0.625rem;
+}
+.teammate__contacts a,
+.teammate__contacts span {
+  font-size: 0.875rem;
+  line-height: 140%;
+}
+.teammate__contacts a {
+  text-decoration: underline;
+}
+@media (width < 47.9375rem) {
+  .teammate__contacts {
+    display: flex;
+    text-align: left;
+    margin-bottom: 1.625rem;
+    width: 100%;
+    padding-right: 1.5rem;
+  }
+}
+.teammate__sticker {
+  width: 9.375rem;
+  height: auto;
+  aspect-ratio: 1/1;
+  margin-inline: auto;
+}
+.teammate__sticker img {
+  mix-blend-mode: multiply;
+}
+@media (width < 47.9375rem) {
+  .teammate__sticker {
+    margin-bottom: 0.75rem;
+    padding-right: 1.5rem;
+  }
+}
+.teammate__info {
+  display: none;
+}
+@media (width < 47.9375rem) {
+  .teammate__info {
+    display: block;
+    width: 100%;
+    overflow: hidden;
+  }
+}
+.teammate__info-wrapper {
+  display: flex;
+  align-items: stretch;
+  gap: 0.5rem;
+  overflow-x: auto;
+  width: 100%;
+  max-width: 100%;
+}
+@media (width < 47.9375rem) {
+  .teammate__info-wrapper {
+    padding-bottom: 0.625rem;
+    padding-right: 1.5rem;
+  }
+}
+.teammate__info-card {
+  flex: 0 0 80%;
+  padding: 1.5rem;
+  background: rgba(255, 255, 255, 0.4);
+  font-size: 0.875rem;
+  line-height: 130%;
+  min-height: 11rem;
+}
+.teammate__education-label {
+  margin-bottom: 1rem;
+}
+.teammate__education-row {
+  padding: 0.625rem 0;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
+}
+.teammate__education-row:nth-child(2) {
+  border-top: 1px solid rgba(0, 0, 0, 0.15);
 }

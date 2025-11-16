@@ -440,7 +440,6 @@ document.addEventListener("DOMContentLoaded", () => {
    const container = document.querySelector(".about__advantages");
    const items = document.querySelectorAll(".about__advantage");
 
-   // Проверка на наличие контейнера и элементов
    if (!container || !items.length) return;
 
    // создаём динамическую плашку
@@ -448,20 +447,22 @@ document.addEventListener("DOMContentLoaded", () => {
    hoverBg.className = "about__hover-bg";
    container.appendChild(hoverBg);
 
+   // цвета закреплены за индексами
+   const colors = ["#e3ecfb", "#b8e0cf", "#f7e9b3", "#ffdcd1", "#e5dcfd"];
+
+   function getColorForItem(item) {
+      const index = Array.from(items).indexOf(item);
+      return colors[index % colors.length];
+   }
+
    let mode = null;
    let scrollObserver = null;
 
-   // ---------------------------
-   // ФУНКЦИЯ: Заливка первого элемента по умолчанию
-   // ---------------------------
    function activateFirst() {
       const first = items[0];
       if (!first) return;
 
-      items.forEach(i => {
-         i.classList.remove("active");
-         i.classList.remove("prev-hover");
-      });
+      items.forEach(i => i.classList.remove("active", "prev-hover"));
 
       first.classList.add("active");
 
@@ -471,10 +472,12 @@ document.addEventListener("DOMContentLoaded", () => {
       hoverBg.style.top = rect.top - parent.top + "px";
       hoverBg.style.height = rect.height + "px";
       hoverBg.style.opacity = 1;
+
+      hoverBg.style.backgroundColor = getColorForItem(first);
    }
 
    // ---------------------------
-   // MODE 1 — Desktop >= 980px
+   // DESKTOP MODE
    // ---------------------------
    function enableHoverMode() {
       if (mode === "hover") return;
@@ -491,6 +494,7 @@ document.addEventListener("DOMContentLoaded", () => {
       items.forEach(item => {
          item.addEventListener("mouseenter", mouseEnterHandler);
       });
+
       activateFirst();
    }
 
@@ -498,6 +502,7 @@ document.addEventListener("DOMContentLoaded", () => {
       if (mode !== "hover") return;
 
       const item = e.currentTarget;
+
       const rect = item.getBoundingClientRect();
       const parent = container.getBoundingClientRect();
 
@@ -505,21 +510,18 @@ document.addEventListener("DOMContentLoaded", () => {
       hoverBg.style.height = rect.height + "px";
       hoverBg.style.opacity = 1;
 
-      items.forEach(i => {
-         i.classList.remove("active");
-         i.classList.remove("prev-hover");
-      });
-
+      items.forEach(i => i.classList.remove("active", "prev-hover"));
       item.classList.add("active");
 
       const prev = item.previousElementSibling;
-      if (prev) {
-         prev.classList.add("prev-hover");
-      }
+      if (prev) prev.classList.add("prev-hover");
+
+      // ставим свой цвет элемента
+      hoverBg.style.backgroundColor = getColorForItem(item);
    }
 
    // ---------------------------
-   // MODE 2 — Mobile < 980px
+   // MOBILE MODE
    // ---------------------------
    function enableScrollMode() {
       if (mode === "scroll") return;
@@ -530,34 +532,32 @@ document.addEventListener("DOMContentLoaded", () => {
          item.removeEventListener("mouseenter", mouseEnterHandler);
       });
 
-      items.forEach(item => {
-         item.classList.remove("active");
-         item.classList.remove("prev-hover");
-      });
+      items.forEach(item => item.classList.remove("active", "prev-hover"));
 
       const linePercent = 0.60;
 
       scrollObserver = new IntersectionObserver(
          (entries) => {
             entries.forEach(entry => {
-               if (entry.isIntersecting) {
-                  const item = entry.target;
-                  items.forEach(i => {
-                     i.classList.remove("active");
-                     i.classList.remove("prev-hover");
-                  });
-                  item.classList.add("active");
-                  const prev = item.previousElementSibling;
-                  if (prev) {
-                     prev.classList.add("prev-hover");
-                  }
-                  const rect = item.getBoundingClientRect();
-                  const parent = container.getBoundingClientRect();
+               if (!entry.isIntersecting) return;
 
-                  hoverBg.style.top = rect.top - parent.top + "px";
-                  hoverBg.style.height = rect.height + "px";
-                  hoverBg.style.opacity = 1;
-               }
+               const item = entry.target;
+
+               items.forEach(i => i.classList.remove("active", "prev-hover"));
+               item.classList.add("active");
+
+               const prev = item.previousElementSibling;
+               if (prev) prev.classList.add("prev-hover");
+
+               const rect = item.getBoundingClientRect();
+               const parent = container.getBoundingClientRect();
+
+               hoverBg.style.top = rect.top - parent.top + "px";
+               hoverBg.style.height = rect.height + "px";
+               hoverBg.style.opacity = 1;
+
+               // закреплённый цвет
+               hoverBg.style.backgroundColor = getColorForItem(item);
             });
          },
          {
@@ -570,21 +570,58 @@ document.addEventListener("DOMContentLoaded", () => {
       activateFirst();
    }
 
-   // ---------------------------
-   // MODE SWITCHER
-   // ---------------------------
    function checkMode() {
-      if (window.innerWidth >= 980) {
-         enableHoverMode();
-      } else {
-         enableScrollMode();
-      }
+      if (window.innerWidth >= 980) enableHoverMode();
+      else enableScrollMode();
    }
 
    checkMode();
    window.addEventListener("resize", checkMode);
 });
 
+
+/*==========================================================================
+Nums
+============================================================================*/
+document.addEventListener("DOMContentLoaded", function () {
+   const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+         if (entry.isIntersecting) {
+            animateNumbers(entry.target);
+            observer.unobserve(entry.target);
+         }
+      });
+   }, {
+      threshold: 0.5
+   });
+
+   const teamAdvSection = document.querySelector('.team-adv');
+   if (teamAdvSection) {
+      observer.observe(teamAdvSection);
+   }
+
+   function animateNumbers(section) {
+      const counters = section.querySelectorAll('i[data-num]');
+      counters.forEach(counter => {
+         const target = +counter.getAttribute('data-num');
+         const duration = 2000;
+         const increment = target / (duration / 16);
+         let current = 0;
+
+         const updateCount = () => {
+            current += increment;
+            if (current < target) {
+               counter.innerText = Math.floor(current);
+               requestAnimationFrame(updateCount);
+            } else {
+               counter.innerText = target;
+            }
+         };
+
+         updateCount();
+      });
+   }
+});
 })();
 
 /******/ })()
