@@ -403,10 +403,10 @@ if (reviewsSlider) {
 /*==========================================================================
 principles slider
 ============================================================================*/
-/* const principlesSlider = document.querySelector(".principles__slider");
+const portfolioSlider = document.querySelector(".portfolio__slider");
 
-if (principlesSlider) {
-   const principlesSwiper = new Swiper(principlesSlider, {
+if (portfolioSlider) {
+   const portfolioSwiper = new Swiper(portfolioSlider, {
       slidesPerView: 3,
       freeMode: true,
       spaceBetween: 10,
@@ -430,7 +430,7 @@ if (principlesSlider) {
       },
    });
 }
- */
+
 
 
 /*==========================================================================
@@ -622,6 +622,77 @@ document.addEventListener("DOMContentLoaded", function () {
       });
    }
 });
+
+
+/*==========================================================================
+Teammate cards
+============================================================================*/
+document.addEventListener("DOMContentLoaded", () => {
+   const teammates = document.querySelectorAll(".teammate");
+   const teamButtons = document.querySelectorAll(".open-popup[data-popup='team-popup']");
+
+   let teamSwiper = null;
+
+   // 1) Мобильная логика
+   function activateFirstMobile() {
+      if (window.innerWidth < 768 && teammates.length > 0) {
+         teammates.forEach(t => t.classList.remove("active"));
+         teammates[0].classList.add("active");
+      }
+   }
+
+   activateFirstMobile();
+
+   // 2) Swiper и popup для desktop
+   function initTeamSwiper(startIndex = 0) {
+      if (teamSwiper) {
+         teamSwiper.slideTo(startIndex, 0);
+         return;
+      }
+
+      teamSwiper = new Swiper(".team-popup__slider", {
+         initialSlide: startIndex,
+         navigation: {
+            nextEl: ".team-popup__next",
+            prevEl: ".team-popup__prev"
+         },
+         speed: 500
+      });
+   }
+
+   // 3) Обработчики кликов
+   teamButtons.forEach((btn, index) => {
+
+      btn.addEventListener("click", function (e) {
+         const isDesktop = window.innerWidth >= 768;
+         const teammate = btn.closest(".teammate");
+
+         if (!isDesktop) {
+            e.stopImmediatePropagation();
+            e.preventDefault();
+
+            if (teammate.classList.contains("active")) {
+               teammate.classList.remove("active");
+               return;
+            }
+
+            teammates.forEach(t => t.classList.remove("active"));
+            teammate.classList.add("active");
+            return;
+         }
+
+         setTimeout(() => {
+            initTeamSwiper(index);
+         }, 50);
+
+      }, true);
+   });
+
+   window.addEventListener("resize", () => {
+      activateFirstMobile();
+   });
+});
+
 })();
 
 /******/ })()
