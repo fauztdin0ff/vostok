@@ -652,6 +652,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
       teamSwiper = new Swiper(".team-popup__slider", {
          initialSlide: startIndex,
+         effect: 'fade',
          navigation: {
             nextEl: ".team-popup__next",
             prevEl: ".team-popup__prev"
@@ -690,6 +691,217 @@ document.addEventListener("DOMContentLoaded", () => {
 
    window.addEventListener("resize", () => {
       activateFirstMobile();
+   });
+});
+
+/*==========================================================================
+Projects cards
+============================================================================*/
+document.addEventListener("DOMContentLoaded", () => {
+   let projectSwiper = null;
+
+   // 1) Функция для активации первого проекта в каждом блоке .projects на мобильных
+   function activateFirstMobileProjectInEachSection() {
+      if (window.innerWidth < 768) {
+         // Находим все секции .projects
+         const projectSections = document.querySelectorAll('.projects');
+
+         projectSections.forEach(section => {
+            // Находим первый .project.open-popup[data-popup='projects-popup'] в этой секции
+            const firstProject = section.querySelector('.project.open-popup[data-popup="projects-popup"]');
+            if (firstProject) {
+               // Убираем класс active у всех проектов в этой секции
+               const allProjectsInThisSection = section.querySelectorAll('.project.open-popup[data-popup="projects-popup"]');
+               allProjectsInThisSection.forEach(p => p.classList.remove('active'));
+               // Добавляем active первому
+               firstProject.classList.add('active');
+            }
+         });
+      } else {
+         // На десктопе убираем все active классы, если они были
+         const allActiveProjects = document.querySelectorAll('.project.active');
+         allActiveProjects.forEach(p => p.classList.remove('active'));
+      }
+   }
+
+   // Инициализация при загрузке
+   activateFirstMobileProjectInEachSection();
+
+   // 2) Инициализация свайпера для popup (desktop)
+   function initProjectSwiper(startIndex = 0) {
+      if (projectSwiper) {
+         projectSwiper.slideTo(startIndex, 0);
+         return;
+      }
+
+      projectSwiper = new Swiper(".projects-popup__slider", {
+         initialSlide: startIndex,
+         effect: 'fade',
+         speed: 500,
+         navigation: {
+            nextEl: ".projects-popup__next",
+            prevEl: ".projects-popup__prev"
+         },
+      });
+   }
+
+   // 3) Клики по карточкам
+   const projects = document.querySelectorAll(".project.open-popup[data-popup='projects-popup']");
+
+   projects.forEach((project, index) => {
+      project.addEventListener("click", function (e) {
+         const isDesktop = window.innerWidth >= 768;
+
+         // --- MOBILE ---
+         if (!isDesktop) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            if (project.classList.contains("active")) {
+               project.classList.remove("active");
+               return;
+            }
+
+            // Найти родительский .projects, и убрать active у всех проектов внутри него
+            const parentSection = project.closest('.projects');
+            if (parentSection) {
+               const allProjectsInThisSection = parentSection.querySelectorAll('.project.open-popup[data-popup="projects-popup"]');
+               allProjectsInThisSection.forEach(p => p.classList.remove('active'));
+               project.classList.add("active");
+            }
+            return;
+         }
+
+         // --- DESKTOP — открыть popup ---
+         const popupId = project.dataset.popup;
+         const popup = document.getElementById(popupId);
+         if (!popup) return;
+
+         popup.classList.add("active");
+
+         setTimeout(() => initProjectSwiper(index), 50);
+      }, true);
+   });
+
+   // 4) Обновление при ресайзе
+   window.addEventListener("resize", () => {
+      activateFirstMobileProjectInEachSection();
+   });
+});
+
+/*==========================================================================
+Completed projects
+============================================================================*/
+document.addEventListener("DOMContentLoaded", () => {
+   const projects = document.querySelectorAll(".completed__project");
+
+   if (!projects.length) return;
+
+   function setHeight(project) {
+      const details = project.querySelector(".completed__project-details");
+      if (!details) return;
+      const height = details.scrollHeight + 20;
+      details.style.maxHeight = height + "px";
+   }
+
+   function resetHeight(project) {
+      const details = project.querySelector(".completed__project-details");
+      if (!details) return;
+      details.style.maxHeight = "0px";
+   }
+
+   function unsetHeight(project) {
+      const details = project.querySelector(".completed__project-details");
+      if (!details) return;
+      details.style.maxHeight = "unset";
+   }
+
+   function initMobileAccordion() {
+      if (window.innerWidth <= 980) {
+
+         projects.forEach((p, i) => {
+            if (i === 0) {
+               p.classList.add("active");
+               setHeight(p);
+            } else {
+               p.classList.remove("active");
+               resetHeight(p);
+            }
+         });
+
+         projects.forEach(project => {
+            project.addEventListener("click", () => {
+               const isActive = project.classList.contains("active");
+
+               if (isActive) {
+                  project.classList.remove("active");
+                  resetHeight(project);
+                  return;
+               }
+
+               projects.forEach(p => {
+                  p.classList.remove("active");
+                  resetHeight(p);
+               });
+
+               project.classList.add("active");
+               setHeight(project);
+            });
+         });
+
+      } else {
+         projects.forEach(p => {
+            p.classList.remove("active");
+            unsetHeight(p);
+         });
+      }
+   }
+
+   initMobileAccordion();
+
+   window.addEventListener("resize", () => {
+      initMobileAccordion();
+   });
+});
+
+
+/*==========================================================================
+Completed projects hover
+============================================================================*/
+document.addEventListener("DOMContentLoaded", () => {
+   const table = document.querySelector(".completed__table");
+   const projects = document.querySelectorAll(".completed__table .completed__project");
+
+   if (!table || !projects.length) return;
+
+   // Создаем плашку
+   const hoverBg = document.createElement("div");
+   hoverBg.className = "completed__hover-bg";
+   table.appendChild(hoverBg);
+
+   // Закрепленные цвета
+   const colors = ["#e3ecfb", "#b8e0cf", "#f7e9b3", "#ffdcd1", "#e5dcfd"];
+
+   const getColor = (item) => {
+      const index = Array.from(projects).indexOf(item);
+      return colors[index % colors.length];
+   };
+
+   function moveBg(item) {
+      const rect = item.getBoundingClientRect();
+      const parent = table.getBoundingClientRect();
+
+      hoverBg.style.top = rect.top - parent.top + "px";
+      hoverBg.style.height = rect.height + "px";
+      hoverBg.style.backgroundColor = getColor(item);
+      hoverBg.style.opacity = "1";
+   }
+
+   projects.forEach(project => {
+      project.addEventListener("mouseenter", () => moveBg(project));
+      project.addEventListener("mouseleave", () => {
+         hoverBg.style.opacity = "0";
+      });
    });
 });
 
