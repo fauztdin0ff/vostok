@@ -3268,6 +3268,7 @@ Projects
 }
 @media (hover: hover) {
   .project:hover .project__logo img {
+    -webkit-filter: grayscale(0);
     filter: grayscale(0);
   }
   .project:hover .project__button::after {
@@ -3289,6 +3290,7 @@ Projects
     background: var(--project-hover-color);
   }
   .project.active .project__logo img {
+    -webkit-filter: grayscale(0);
     filter: grayscale(0);
   }
   .project.active .project__button svg {
@@ -3316,6 +3318,7 @@ Projects
 }
 .project__logo img {
   transition: transform 0.8s cubic-bezier(0.8, 0, 0, 0.8) 0s;
+  -webkit-filter: grayscale(1);
   filter: grayscale(1);
 }
 @media (width < 47.9375rem) {
@@ -3593,6 +3596,7 @@ Completed projects
 }
 @media (hover: hover) {
   .completed__project:hover .completed__project-logo img {
+    -webkit-filter: grayscale(0);
     filter: grayscale(0);
   }
 }
@@ -3677,6 +3681,7 @@ Completed projects
   align-items: center;
 }
 .completed__project-logo img {
+  -webkit-filter: grayscale(1);
   filter: grayscale(1);
   mix-blend-mode: multiply;
 }
