@@ -1,7 +1,7 @@
 <svg width="117" height="34" viewBox="0 0 117 34" fill="none" xmlns="http://www.w3.org/2000/svg">
 <g style="mix-blend-mode:luminosity">
 <g clip-path="url(#clip0_5867_5755)">
-<mask id="mask0_5867_5755" style="mask-type:luminance" maskUnits="userSpaceOnUse" x="0" y="4" width="95" height="26">
+<mask id="mask0_5867_5755"  maskUnits="userSpaceOnUse" x="0" y="4" width="95" height="26">
 <path d="M95 4.5H0V29.5H95V4.5Z" fill="white"/>
 </mask>
 <g mask="url(#mask0_5867_5755)">
