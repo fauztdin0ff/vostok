@@ -905,6 +905,38 @@ document.addEventListener("DOMContentLoaded", () => {
    });
 });
 
+
+/*==========================================================================
+Smi slider
+============================================================================*/
+const smiSlider = document.querySelector(".smi__slider");
+
+if (smiSlider) {
+   const smiSwiper = new Swiper(smiSlider, {
+      spaceBetween: 10,
+      direction: "vertical",
+      autoHeight: false,
+      pagination: {
+         el: ".smi__slider-pagination",
+         clickable: true,
+      },
+      navigation: {
+         nextEl: ".smi__slider-next",
+         prevEl: ".smi__slider-prev",
+      },
+      breakpoints: {
+         320: {
+            direction: "horizontal",
+            slidesPerView: 1,
+         },
+         980: {
+            direction: "vertical",
+            slidesPerView: 3,
+         }
+      },
+   });
+}
+
 })();
 
 /******/ })()
