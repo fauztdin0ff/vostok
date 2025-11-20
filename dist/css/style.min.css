@@ -193,7 +193,7 @@ body::after {
   background: rgba(255, 255, 255, 0.6);
   pointer-events: none;
   transition: all 0.3s ease;
-  transform: translateX(-100%);
+  transform: translateX(100%);
   z-index: 2;
 }
 body.no-scroll {
