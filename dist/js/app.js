@@ -913,9 +913,10 @@ const smiSlider = document.querySelector(".smi__slider");
 
 if (smiSlider) {
    const smiSwiper = new Swiper(smiSlider, {
+      loop: false,
       spaceBetween: 10,
-      direction: "vertical",
       autoHeight: false,
+      speed: 600,
       pagination: {
          el: ".smi__slider-pagination",
          clickable: true,
@@ -931,7 +932,7 @@ if (smiSlider) {
          },
          980: {
             direction: "vertical",
-            slidesPerView: 3,
+            slidesPerView: 1,
          }
       },
    });
