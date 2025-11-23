@@ -310,45 +310,29 @@ window.addEventListener('scroll', () => {
 /*==========================================================================
 Hero anim
 ============================================================================*/
-document.addEventListener('DOMContentLoaded', () => {
-   const wrapper = document.querySelector('.hero__title-wrapper');
-   const words = document.querySelectorAll('.hero__title-word');
-   const illustrations = document.querySelectorAll('.hero__card-illustration');
-   const container = document.querySelector('.hero__title-words');
+const words = document.querySelectorAll('.hero__title-word');
+const illustrations = document.querySelectorAll('.hero__card-illustration');
+let current = 0;
 
-   if (!wrapper || !container || !words.length || !illustrations.length) {
-      return;
-   }
+words[current].classList.add('active');
+illustrations[current].classList.add('active');
 
-   let index = 0;
-   const duration = 3000;
+setInterval(() => {
+   const prev = current;
+   current = (current + 1) % words.length;
 
-   function showWord(i) {
-      const wordHeight = container.offsetHeight;
-      wrapper.style.transform = `translateY(-${i * wordHeight}px)`;
+   words[prev].classList.remove('active');
+   words[prev].classList.add('exit');
+   words[current].classList.add('active');
 
-      words.forEach((word, idx) => {
-         word.classList.toggle('active', idx === i);
-      });
+   illustrations[prev].classList.remove('active');
+   illustrations[current].classList.add('active');
 
-      illustrations.forEach((img, idx) => {
-         img.classList.toggle('active', idx === i);
-      });
-   }
+   setTimeout(() => {
+      words[prev].classList.remove('exit');
+   }, 600);
 
-   showWord(index);
-
-   const interval = setInterval(() => {
-      index = (index + 1) % words.length;
-      showWord(index);
-   }, duration);
-
-   window.addEventListener('resize', () => {
-      showWord(index);
-   });
-});
-
-
+}, 3000);
 
 /*==========================================================================
 Portfolio case 
@@ -604,7 +588,7 @@ document.addEventListener("DOMContentLoaded", function () {
       const counters = section.querySelectorAll('i[data-num]');
       counters.forEach(counter => {
          const target = +counter.getAttribute('data-num');
-         const duration = 2000;
+         const duration = 4000;
          const increment = target / (duration / 16);
          let current = 0;
 
@@ -700,34 +684,26 @@ Projects cards
 document.addEventListener("DOMContentLoaded", () => {
    let projectSwiper = null;
 
-   // 1) Функция для активации первого проекта в каждом блоке .projects на мобильных
    function activateFirstMobileProjectInEachSection() {
       if (window.innerWidth < 768) {
-         // Находим все секции .projects
          const projectSections = document.querySelectorAll('.projects');
 
          projectSections.forEach(section => {
-            // Находим первый .project.open-popup[data-popup='projects-popup'] в этой секции
             const firstProject = section.querySelector('.project.open-popup[data-popup="projects-popup"]');
             if (firstProject) {
-               // Убираем класс active у всех проектов в этой секции
                const allProjectsInThisSection = section.querySelectorAll('.project.open-popup[data-popup="projects-popup"]');
                allProjectsInThisSection.forEach(p => p.classList.remove('active'));
-               // Добавляем active первому
                firstProject.classList.add('active');
             }
          });
       } else {
-         // На десктопе убираем все active классы, если они были
          const allActiveProjects = document.querySelectorAll('.project.active');
          allActiveProjects.forEach(p => p.classList.remove('active'));
       }
    }
 
-   // Инициализация при загрузке
    activateFirstMobileProjectInEachSection();
 
-   // 2) Инициализация свайпера для popup (desktop)
    function initProjectSwiper(startIndex = 0) {
       if (projectSwiper) {
          projectSwiper.slideTo(startIndex, 0);
@@ -745,7 +721,6 @@ document.addEventListener("DOMContentLoaded", () => {
       });
    }
 
-   // 3) Клики по карточкам
    const projects = document.querySelectorAll(".project.open-popup[data-popup='projects-popup']");
 
    projects.forEach((project, index) => {
@@ -762,7 +737,6 @@ document.addEventListener("DOMContentLoaded", () => {
                return;
             }
 
-            // Найти родительский .projects, и убрать active у всех проектов внутри него
             const parentSection = project.closest('.projects');
             if (parentSection) {
                const allProjectsInThisSection = parentSection.querySelectorAll('.project.open-popup[data-popup="projects-popup"]');
@@ -783,7 +757,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }, true);
    });
 
-   // 4) Обновление при ресайзе
    window.addEventListener("resize", () => {
       activateFirstMobileProjectInEachSection();
    });
@@ -874,12 +847,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
    if (!table || !projects.length) return;
 
-   // Создаем плашку
    const hoverBg = document.createElement("div");
    hoverBg.className = "completed__hover-bg";
    table.appendChild(hoverBg);
 
-   // Закрепленные цвета
    const colors = ["#e3ecfb", "#b8e0cf", "#f7e9b3", "#ffdcd1", "#e5dcfd"];
 
    const getColor = (item) => {

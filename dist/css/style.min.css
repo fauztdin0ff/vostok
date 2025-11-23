@@ -1343,41 +1343,37 @@ Hero
 }
 .hero__title-words {
   display: inline-block;
-  height: 4.125rem;
-  overflow: hidden;
-  transform: translateY(20%);
+  height: 3.4375rem;
+  transform: translateY(19%);
+  line-height: 0.8;
 }
 @media (width < 61.25rem) {
   .hero__title-words {
-    transform: translateY(12%);
+    transform: translateY(22%);
     height: 2.5rem;
   }
 }
 @media (width < 47.9375rem) {
   .hero__title-words {
     display: block;
-    transform: translateY(0);
+    transform: translateY(19%);
   }
 }
-.hero__title-wrapper {
-  position: relative;
-  z-index: 2;
-  display: inline-flex;
-  flex-direction: column;
-  transition: all 0.3s ease;
-  will-change: transform;
-}
 .hero__title-word {
-  height: 4.125rem;
+  height: 3.4375rem;
   position: relative;
   width: max-content;
+  transition: transform 0.3s ease, opacity 0.15s ease;
+  position: absolute;
+  transform: translateY(80%);
+  opacity: 0;
 }
 .hero__title-word::before {
   content: "";
   position: absolute;
-  top: 58%;
+  top: 52%;
   left: 0;
-  width: 100%;
+  width: 110%;
   height: 0.75cap;
   transform: translateY(-50%);
   max-width: 0;
@@ -1392,20 +1388,27 @@ Hero
 .hero__title-word:nth-child(3)::before {
   background: var(--color-primary);
 }
+.hero__title-word.active {
+  opacity: 1;
+  transform: translateY(0);
+}
 .hero__title-word.active::before {
   max-width: 100%;
   transition: max-width 3s linear;
 }
-.hero__title-word.prev {
+.hero__title-word.exit {
   opacity: 0;
-  transform: translateY(-100%);
+  transform: translateY(-80%);
 }
 @media (width < 61.25rem) {
   .hero__title-word {
     height: 2.5rem;
   }
+}
+@media (width < 47.9375rem) {
   .hero__title-word::before {
-    top: 59%;
+    top: 45%;
+    transform: translateY(-50%);
   }
 }
 .hero__cards {
@@ -3136,6 +3139,7 @@ Portfolio
 }
 .portfolio__slide {
   position: relative;
+  outline: none;
   background: #f2f2f2;
   aspect-ratio: 7/5;
   display: flex;
@@ -3175,11 +3179,13 @@ Portfolio
   height: auto;
   flex: 1;
   position: relative;
+  border: 1px solid #f2f2f2;
 }
 .portfolio__slide-anim video {
   position: absolute;
   width: 100%;
   height: 100%;
+  border: 1px solid #f2f2f2;
   object-fit: contain;
 }
 @media (width < 61.25rem) {
