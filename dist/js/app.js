@@ -241,7 +241,7 @@ function init() {
       });
    }
 
-   let options = { threshold: [0.0] };
+   let options = { threshold: [0.4] };
    let observer = new IntersectionObserver(onEntry, options);
    let elements = document.querySelectorAll('.element-animation');
    for (let elm of elements) {
@@ -808,6 +808,28 @@ document.addEventListener("DOMContentLoaded", () => {
       details.style.maxHeight = "unset";
    }
 
+   function removePrevClass() {
+      projects.forEach(p => p.classList.remove('is-prev'));
+   }
+
+   function setPrev(index) {
+      removePrevClass();
+      if (index > 0) {
+         projects[index - 1].classList.add('is-prev');
+      }
+   }
+
+   function setDefaultHover() {
+      projects.forEach((p, i) => {
+         p.classList.remove("active");
+
+         if (i === 0) {
+            p.classList.add("active");
+            setPrev(i);
+         }
+      });
+   }
+
    function initMobileAccordion() {
       if (window.innerWidth <= 980) {
 
@@ -815,19 +837,21 @@ document.addEventListener("DOMContentLoaded", () => {
             if (i === 0) {
                p.classList.add("active");
                setHeight(p);
+               setPrev(i);
             } else {
                p.classList.remove("active");
                resetHeight(p);
             }
          });
 
-         projects.forEach(project => {
-            project.addEventListener("click", () => {
+         projects.forEach((project, i) => {
+            project.onclick = () => {
                const isActive = project.classList.contains("active");
 
                if (isActive) {
                   project.classList.remove("active");
                   resetHeight(project);
+                  removePrevClass();
                   return;
                }
 
@@ -838,14 +862,25 @@ document.addEventListener("DOMContentLoaded", () => {
 
                project.classList.add("active");
                setHeight(project);
-            });
+               setPrev(i);
+            };
          });
 
       } else {
-         projects.forEach(p => {
-            p.classList.remove("active");
+
+         setDefaultHover();
+
+         projects.forEach((p, i) => {
             unsetHeight(p);
+
+            p.onmouseenter = () => {
+               projects.forEach(el => el.classList.remove('active'));
+               p.classList.add("active");
+               setPrev(i);
+            };
+
          });
+
       }
    }
 
