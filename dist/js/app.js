@@ -312,27 +312,30 @@ Hero anim
 ============================================================================*/
 const words = document.querySelectorAll('.hero__title-word');
 const illustrations = document.querySelectorAll('.hero__card-illustration');
-let current = 0;
 
-words[current].classList.add('active');
-illustrations[current].classList.add('active');
+if (words.length && illustrations.length) {
+   let current = 0;
 
-setInterval(() => {
-   const prev = current;
-   current = (current + 1) % words.length;
-
-   words[prev].classList.remove('active');
-   words[prev].classList.add('exit');
    words[current].classList.add('active');
-
-   illustrations[prev].classList.remove('active');
    illustrations[current].classList.add('active');
 
-   setTimeout(() => {
-      words[prev].classList.remove('exit');
-   }, 600);
+   setInterval(() => {
+      const prev = current;
+      current = (current + 1) % words.length;
 
-}, 3000);
+      words[prev].classList.remove('active');
+      words[prev].classList.add('exit');
+      words[current].classList.add('active');
+
+      illustrations[prev].classList.remove('active');
+      illustrations[current].classList.add('active');
+
+      setTimeout(() => {
+         words[prev].classList.remove('exit');
+      }, 600);
+
+   }, 3000);
+}
 
 /*==========================================================================
 Portfolio case 
