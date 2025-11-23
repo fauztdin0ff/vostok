@@ -82,6 +82,7 @@ function burgerMenu() {
       const menuBody = document.querySelector(".menu__body");
       const body = document.body;
       const menuBodyClose = document.querySelector(".menu__body-close");
+      const animationDuration = 500; // 0,3 секунды
 
       if (!menuIcon || !menuBody) return;
 
@@ -98,7 +99,14 @@ function burgerMenu() {
       });
 
       menuBody.addEventListener("click", (e) => {
-         if (e.target.tagName === "A" || e.target.closest("a")) closeMenu();
+         const link = e.target.closest("a");
+         if (link) {
+            e.preventDefault();
+            closeMenu();
+            setTimeout(() => {
+               window.location.href = link.href;
+            }, animationDuration);
+         }
       });
 
       if (menuBodyClose) menuBodyClose.addEventListener("click", closeMenu);
@@ -108,6 +116,7 @@ function burgerMenu() {
       });
    });
 }
+
 
 
 /*---------------------------------------------------------------------------
@@ -336,6 +345,7 @@ if (words.length && illustrations.length) {
 
    }, 3000);
 }
+
 
 /*==========================================================================
 Portfolio case 
@@ -623,10 +633,14 @@ document.addEventListener("DOMContentLoaded", () => {
    // 1) Мобильная логика
    function activateFirstMobile() {
       if (window.innerWidth < 768 && teammates.length > 0) {
-         teammates.forEach(t => t.classList.remove("active"));
-         teammates[0].classList.add("active");
+         const active = Array.from(teammates).some(t => t.classList.contains("active"));
+         if (!active) {
+            teammates.forEach(t => t.classList.remove("active"));
+            teammates[0].classList.add("active");
+         }
       }
    }
+
 
    activateFirstMobile();
 
@@ -692,11 +706,12 @@ document.addEventListener("DOMContentLoaded", () => {
          const projectSections = document.querySelectorAll('.projects');
 
          projectSections.forEach(section => {
-            const firstProject = section.querySelector('.project.open-popup[data-popup="projects-popup"]');
-            if (firstProject) {
-               const allProjectsInThisSection = section.querySelectorAll('.project.open-popup[data-popup="projects-popup"]');
+            const allProjectsInThisSection = section.querySelectorAll('.project.open-popup[data-popup="projects-popup"]');
+            const activeProject = Array.from(allProjectsInThisSection).find(p => p.classList.contains('active'));
+
+            if (!activeProject && allProjectsInThisSection.length) {
                allProjectsInThisSection.forEach(p => p.classList.remove('active'));
-               firstProject.classList.add('active');
+               allProjectsInThisSection[0].classList.add('active');
             }
          });
       } else {
@@ -704,6 +719,7 @@ document.addEventListener("DOMContentLoaded", () => {
          allActiveProjects.forEach(p => p.classList.remove('active'));
       }
    }
+
 
    activateFirstMobileProjectInEachSection();
 
