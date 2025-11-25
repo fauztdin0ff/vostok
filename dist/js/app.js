@@ -366,23 +366,31 @@ Portfolio case
 document.addEventListener('DOMContentLoaded', () => {
    const cases = document.querySelectorAll('.case');
 
-   if (window.innerWidth < 768 && cases.length > 0) {
-      cases[0].classList.add('active');
-   }
+   function mobileLogic() {
+      if (window.innerWidth < 768 && cases.length) {
 
-   cases.forEach(caseItem => {
-      caseItem.addEventListener('click', (e) => {
-         if (e.target.closest('.case__toggle')) return;
+         cases.forEach((item, index) => {
+            item.classList.toggle('active', index === 0);
+         });
+         cases.forEach(caseItem => {
+            caseItem.addEventListener('click', (e) => {
+               if (e.target.closest('.case__toggle')) return;
 
-         if (caseItem.classList.contains('active')) {
-            caseItem.classList.remove('active');
-            return;
-         }
+               if (caseItem.classList.contains('active')) {
+                  caseItem.classList.remove('active');
+                  return;
+               }
+               cases.forEach(item => item.classList.remove('active'));
+               caseItem.classList.add('active');
+            });
+         });
 
+      } else {
          cases.forEach(item => item.classList.remove('active'));
-         caseItem.classList.add('active');
-      });
-   });
+      }
+   }
+   mobileLogic();
+   window.addEventListener('resize', mobileLogic);
 });
 
 
@@ -492,7 +500,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
    if (!container || !items.length) return;
 
-   // создаём динамическую плашку
    const hoverBg = document.createElement("div");
    hoverBg.className = "about__hover-bg";
    container.appendChild(hoverBg);
@@ -566,7 +573,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const prev = item.previousElementSibling;
       if (prev) prev.classList.add("prev-hover");
 
-      // ставим свой цвет элемента
       hoverBg.style.backgroundColor = getColorForItem(item);
    }
 
@@ -605,8 +611,6 @@ document.addEventListener("DOMContentLoaded", () => {
                hoverBg.style.top = rect.top - parent.top + "px";
                hoverBg.style.height = rect.height + "px";
                hoverBg.style.opacity = 1;
-
-               // закреплённый цвет
                hoverBg.style.backgroundColor = getColorForItem(item);
             });
          },
@@ -705,7 +709,6 @@ document.addEventListener("DOMContentLoaded", () => {
             setBodyHeight(teammate);
          });
       } else {
-         // На десктопе сбрасываем всё
          teammates.forEach(teammate => {
             const body = teammate.querySelector('.teammate__body');
             if (body) body.style.maxHeight = '';
@@ -801,7 +804,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }, true);
    });
 
-   // 4) Resize
    window.addEventListener("resize", () => {
       activateFirstMobile();
       updateAllBodies();
