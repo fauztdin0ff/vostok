@@ -627,24 +627,56 @@ Teammate cards
 document.addEventListener("DOMContentLoaded", () => {
    const teammates = document.querySelectorAll(".teammate");
    const teamButtons = document.querySelectorAll(".open-popup[data-popup='team-popup']");
-
    let teamSwiper = null;
 
-   // 1) Мобильная логика
-   function activateFirstMobile() {
-      if (window.innerWidth < 768 && teammates.length > 0) {
-         const active = Array.from(teammates).some(t => t.classList.contains("active"));
-         if (!active) {
-            teammates.forEach(t => t.classList.remove("active"));
-            teammates[0].classList.add("active");
-         }
+   // Установка высоты для mobile
+   function setBodyHeight(teammate) {
+      if (!teammate) return;
+
+      const body = teammate.querySelector('.teammate__body');
+      if (!body) return;
+
+      if (teammate.classList.contains('active')) {
+         const height = body.scrollHeight + 48;
+         body.style.maxHeight = `${height}px`;
+      } else {
+         body.style.maxHeight = '0px';
       }
    }
 
 
+   // Пересчёт высоты для всех элементов
+   function updateAllBodies() {
+      if (window.innerWidth < 768) {
+         teammates.forEach(teammate => {
+            setBodyHeight(teammate);
+         });
+      } else {
+         // На десктопе сбрасываем всё
+         teammates.forEach(teammate => {
+            const body = teammate.querySelector('.teammate__body');
+            if (body) body.style.maxHeight = '';
+         });
+      }
+   }
+
+   // 1) Мобильная логика: активация первого
+   function activateFirstMobile() {
+      if (window.innerWidth < 768 && teammates.length > 0) {
+         const active = Array.from(teammates).some(t => t.classList.contains("active"));
+
+         if (!active) {
+            teammates.forEach(t => t.classList.remove("active"));
+            teammates[0].classList.add("active");
+         }
+
+         updateAllBodies();
+      }
+   }
+
    activateFirstMobile();
 
-   // 2) Swiper и popup для desktop
+   // 2) Swiper (desktop)
    function initTeamSwiper(startIndex = 0) {
       if (teamSwiper) {
          teamSwiper.slideTo(startIndex, 0);
@@ -653,16 +685,20 @@ document.addEventListener("DOMContentLoaded", () => {
 
       teamSwiper = new Swiper(".team-popup__slider", {
          initialSlide: startIndex,
-         effect: 'fade',
-         navigation: {
-            nextEl: ".team-popup__next",
-            prevEl: ".team-popup__prev"
-         },
-         speed: 500
+         slidesPerView: 1.15,
+         centeredSlides: true,
+         spaceBetween: 64,
+         speed: 500,
+         navigation: false,
+         keyboard: {
+            enabled: true,
+            onlyInViewport: true
+         }
       });
    }
 
-   // 3) Обработчики кликов
+
+   // 3) Клики
    teamButtons.forEach((btn, index) => {
 
       btn.addEventListener("click", function (e) {
@@ -675,11 +711,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
             if (teammate.classList.contains("active")) {
                teammate.classList.remove("active");
+               setBodyHeight(teammate);
                return;
             }
 
-            teammates.forEach(t => t.classList.remove("active"));
+            teammates.forEach(t => {
+               t.classList.remove("active");
+               setBodyHeight(t);
+            });
+
             teammate.classList.add("active");
+            setBodyHeight(teammate);
+
             return;
          }
 
@@ -690,10 +733,14 @@ document.addEventListener("DOMContentLoaded", () => {
       }, true);
    });
 
+   // 4) Resize
    window.addEventListener("resize", () => {
       activateFirstMobile();
+      updateAllBodies();
    });
+
 });
+
 
 /*==========================================================================
 Projects cards

@@ -973,6 +973,9 @@ Popups general
 /*==========================================================================
 Team popup
 ============================================================================*/
+.team-popup {
+  padding-inline: 0;
+}
 .team-popup.show .team-popup__main,
 .team-popup.show .team-popup__preview {
   opacity: 1;
@@ -980,16 +983,18 @@ Team popup
 .team-popup__body {
   min-width: 0;
   width: 100%;
+  max-width: 100%;
 }
 .team-popup__slider {
   min-width: 0;
   width: 100%;
 }
 .team-popup__slide {
-  padding: 3.5rem;
+  padding: 3.5rem 5rem;
   display: flex;
-  gap: 3.5rem 5rem;
+  gap: 5rem;
   background: var(--color-secondary);
+  min-height: 618px;
 }
 @media (width < 61.25rem) {
   .team-popup__slide {
@@ -1004,27 +1009,10 @@ Team popup
   opacity: 0;
   transition: all 0.3s ease 0.3s;
 }
-.team-popup__controls {
-  margin-bottom: 2.25rem;
-}
-.team-popup__controls .slider-nav {
-  gap: 4px;
-}
-@media (hover: hover) {
-  .team-popup__controls .slider-nav .slider-next:hover,
-  .team-popup__controls .slider-nav .slider-prev:hover {
-    background: #000;
-    color: #fff;
-  }
-}
-.team-popup__controls .slider-nav .slider-prev {
-  color: #000;
-  border-color: #000;
-}
 .team-popup__image {
-  margin-top: auto;
-  width: 26.25rem;
-  aspect-ratio: 1/1;
+  flex: 1;
+  width: 100%;
+  height: auto;
   height: auto;
   position: relative;
   background: #f2f2f2;
@@ -1317,7 +1305,7 @@ Hero
 }
 @media (width < 47.9375rem) {
   .hero__body {
-    padding-top: 7.5rem;
+    padding-top: 5rem;
   }
 }
 .hero__title {
@@ -1414,6 +1402,7 @@ Hero
 @media (width < 47.9375rem) {
   .hero__cards {
     flex-direction: column-reverse;
+    gap: 0;
   }
 }
 .hero__card {
@@ -1433,7 +1422,7 @@ Hero
 @media (width < 47.9375rem) {
   .hero__card {
     background: transparent;
-    padding: 1.5rem;
+    padding: 1.5rem 1.5rem 0 1.5rem;
   }
 }
 .hero__card-text {
@@ -2950,7 +2939,7 @@ Teammates
 @media (width < 47.9375rem) {
   .teammates__grid {
     grid-template-columns: 1fr;
-    gap: 0;
+    gap: 0.5rem;
   }
 }
 
@@ -2973,11 +2962,11 @@ Teammates
     border-bottom: 1px solid rgba(0, 0, 0, 0.15);
   }
   .teammate.active {
-    background: var(--color-secondary);
+    background: #f2f2f2;
   }
   .teammate.active .teammate__body {
-    padding: 0 0 1.5rem 0;
-    max-height: 400px;
+    padding: 1.5rem;
+    background: var(--color-secondary);
   }
   .teammate.active .teammate__toggle svg {
     transform: rotate(-45deg);
@@ -3011,6 +3000,9 @@ Teammates
   .teammate__head {
     padding: 1.5rem;
     background: transparent;
+  }
+  .teammate__head::after {
+    display: none;
   }
 }
 @media (hover: hover) {
@@ -3052,38 +3044,16 @@ Teammates
   justify-content: center;
   text-align: center;
   padding: 1.5rem;
+  overflow: hidden;
 }
 @media (width < 47.9375rem) {
   .teammate__body {
+    display: block;
     align-items: flex-start;
     text-align: left;
-    overflow: hidden;
     max-height: 0;
-    padding: 0;
+    padding: 0 1.5rem;
     transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0s;
-  }
-}
-.teammate__contacts {
-  display: none;
-  align-items: center;
-  justify-content: flex-start;
-  gap: 0.625rem;
-}
-.teammate__contacts a,
-.teammate__contacts span {
-  font-size: 0.875rem;
-  line-height: 140%;
-}
-.teammate__contacts a {
-  text-decoration: underline;
-}
-@media (width < 47.9375rem) {
-  .teammate__contacts {
-    display: flex;
-    text-align: left;
-    margin-bottom: 1.625rem;
-    width: 100%;
-    padding-inline: 1.5rem;
   }
 }
 .teammate__sticker {
@@ -3091,60 +3061,29 @@ Teammates
   height: auto;
   aspect-ratio: 1/1;
   margin-inline: auto;
+  max-height: 9.375rem;
 }
 .teammate__sticker img {
   mix-blend-mode: multiply;
 }
 @media (width < 47.9375rem) {
   .teammate__sticker {
-    margin-bottom: 0.75rem;
-    padding-inline: 1.5rem;
-    width: 100%;
-    aspect-ratio: unset;
-    text-align: center;
+    display: none;
   }
 }
 .teammate__info {
   display: none;
+  font-size: 0.875rem;
+  line-height: 130%;
+}
+.teammate__info p:not(:last-child) {
+  margin-bottom: 1.25rem;
 }
 @media (width < 47.9375rem) {
   .teammate__info {
     display: block;
     width: 100%;
-    overflow: hidden;
   }
-}
-.teammate__info-wrapper {
-  display: flex;
-  align-items: stretch;
-  gap: 0.5rem;
-  overflow-x: auto;
-  width: 100%;
-  max-width: 100%;
-}
-@media (width < 47.9375rem) {
-  .teammate__info-wrapper {
-    padding-bottom: 0.625rem;
-    padding-inline: 1.5rem;
-  }
-}
-.teammate__info-card {
-  flex: 0 0 85%;
-  padding: 1.5rem;
-  background: rgba(255, 255, 255, 0.4);
-  font-size: 0.875rem;
-  line-height: 130%;
-  min-height: 11rem;
-}
-.teammate__education-label {
-  margin-bottom: 1rem;
-}
-.teammate__education-row {
-  padding: 0.625rem 0;
-  border-top: 1px solid rgba(0, 0, 0, 0.15);
-}
-.teammate__education-row:last-child {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.15);
 }
 
 /*==========================================================================
