@@ -685,15 +685,30 @@ document.addEventListener("DOMContentLoaded", () => {
 
       teamSwiper = new Swiper(".team-popup__slider", {
          initialSlide: startIndex,
-         slidesPerView: 1.15,
+         slidesPerView: 'auto',
          centeredSlides: true,
-         spaceBetween: 64,
          speed: 500,
          navigation: false,
          keyboard: {
             enabled: true,
             onlyInViewport: true
-         }
+         },
+         breakpoints: {
+            768: {
+               spaceBetween: 32,
+            },
+            1400: {
+               spaceBetween: 64,
+            }
+         },
+         pagination: {
+            el: ".team-popup__paginataion",
+            clickable: true,
+         },
+         navigation: {
+            nextEl: ".team-popup__next",
+            prevEl: ".team-popup__prev",
+         },
       });
    }
 

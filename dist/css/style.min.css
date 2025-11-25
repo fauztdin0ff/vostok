@@ -985,21 +985,42 @@ Team popup
   width: 100%;
   max-width: 100%;
 }
+.team-popup__controls {
+  margin-top: 2.25rem;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+@media (width < 1400px) {
+  .team-popup__controls {
+    width: 90%;
+  }
+}
+.team-popup__controls .slider-nav {
+  justify-content: end;
+}
 .team-popup__slider {
   min-width: 0;
   width: 100%;
 }
 .team-popup__slide {
+  width: 80rem;
   padding: 3.5rem 5rem;
   display: flex;
   gap: 5rem;
   background: var(--color-secondary);
   min-height: 618px;
 }
+@media (width < 1400px) {
+  .team-popup__slide {
+    width: 90%;
+    gap: 3rem;
+  }
+}
 @media (width < 61.25rem) {
   .team-popup__slide {
     padding: 3.5rem 2rem;
     gap: 2rem;
+    min-height: unset;
   }
 }
 .team-popup__preview {
