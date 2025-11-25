@@ -1768,12 +1768,14 @@ Team section
     background-color: var(--card-hover-color);
   }
   .case:hover .case__info {
-    transform: translateX(calc(-100% - 40px));
-    transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0s;
+    transform: translateY(-100%);
+    opacity: 0;
+    transition: all 0.3s ease-in-out 0s;
   }
   .case:hover .case__details {
-    transform: translateX(-100%);
-    transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0.4s;
+    transform: translateY(0);
+    opacity: 1;
+    transition: all 0.4s ease-in-out 0s;
   }
   .case:hover .case__logo {
     -webkit-filter: grayscale(0);
@@ -1869,8 +1871,7 @@ Team section
 }
 @media (width >= 48rem) {
   .case__body {
-    display: flex;
-    align-items: flex-end;
+    position: relative;
   }
 }
 @media (width < 47.9375rem) {
@@ -1878,14 +1879,21 @@ Team section
     flex: 1;
     max-height: 0;
     overflow: hidden;
-    transition: all 0.4s ease 0s;
+    transition: all 0.4s ease-in-out 0s;
     will-change: max-height;
   }
 }
 .case__info {
   flex: 0 0 100%;
-  transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0.4s;
+  transition: all 0.3s ease-in-out 0.2s;
   overflow: hidden;
+}
+@media (width > 767px) {
+  .case__info {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
 }
 @media (width < 47.9375rem) {
   .case__info {
@@ -1919,13 +1927,21 @@ Team section
   }
 }
 .case__details {
-  flex: 0 0 100%;
-  transform: translateX(40px);
   overflow: hidden;
-  transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0s;
+  transform: translateY(100%);
+  opacity: 0;
+  transition: all 0.4s ease-in-out;
+}
+@media (width > 767px) {
+  .case__details {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+  }
 }
 @media (width < 47.9375rem) {
   .case__details {
+    opacity: 1;
     flex: 1 1 auto;
     transform: none;
     max-height: unset;
