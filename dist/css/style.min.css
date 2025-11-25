@@ -616,10 +616,8 @@ Menu
     position: absolute;
     background-color: #000;
     border-radius: 3px;
-    transition: all 0.3s ease 0s;
     width: calc(100% - 8px);
     left: 4px;
-    will-change: transform;
   }
   .menu__icon::before, .menu__icon::after {
     content: "";
@@ -2986,7 +2984,6 @@ Teammates
     background: #f2f2f2;
   }
   .teammate.active .teammate__body {
-    padding: 1.5rem;
     background: var(--color-secondary);
   }
   .teammate.active .teammate__toggle svg {
@@ -3066,6 +3063,7 @@ Teammates
   text-align: center;
   padding: 1.5rem;
   overflow: hidden;
+  will-change: max-height;
 }
 @media (width < 47.9375rem) {
   .teammate__body {
@@ -3073,8 +3071,8 @@ Teammates
     align-items: flex-start;
     text-align: left;
     max-height: 0;
-    padding: 0 1.5rem;
-    transition: all 0.4s cubic-bezier(0.8, 0, 0, 0.8) 0s;
+    padding: 0;
+    transition: max-height 0.3s linear;
   }
 }
 .teammate__sticker {
@@ -3102,6 +3100,7 @@ Teammates
 }
 @media (width < 47.9375rem) {
   .teammate__info {
+    padding: 1.5rem;
     display: block;
     width: 100%;
   }
