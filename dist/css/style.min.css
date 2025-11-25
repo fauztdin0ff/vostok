@@ -1123,6 +1123,9 @@ Team popup
 /*==========================================================================
 Projects popup
 ============================================================================*/
+.projects-popup {
+  padding-inline: 0;
+}
 .projects-popup.show .projects-popup__main,
 .projects-popup.show .projects-popup__preview {
   opacity: 1;
@@ -1130,17 +1133,26 @@ Projects popup
 .projects-popup__body {
   min-width: 0;
   width: 100%;
+  max-width: 100%;
 }
 .projects-popup__slider {
   min-width: 0;
   width: 100%;
 }
 .projects-popup__slide {
-  width: 100%;
+  width: 80rem;
   padding: 3.5rem 5rem;
   display: flex;
-  gap: 3.5rem;
+  gap: 5rem;
   background: var(--project-hover-color);
+  min-height: 38.625rem;
+}
+@media (width < 1400px) {
+  .projects-popup__slide {
+    width: 90%;
+    gap: 3rem;
+    min-height: unset;
+  }
 }
 @media (width < 61.25rem) {
   .projects-popup__slide {
@@ -1160,32 +1172,14 @@ Projects popup
 }
 @media (width < 61.25rem) {
   .projects-popup__preview {
-    flex-direction: row-reverse;
-    align-items: flex-end;
+    flex-direction: row;
+    align-items: flex-start;
     justify-content: space-between;
   }
 }
-.projects-popup__controls {
-  margin-bottom: 2.25rem;
-}
-.projects-popup__controls .slider-nav {
-  gap: 4px;
-}
-@media (hover: hover) {
-  .projects-popup__controls .slider-nav .slider-next:hover,
-  .projects-popup__controls .slider-nav .slider-prev:hover {
-    background: #000;
-    color: #fff;
-  }
-}
-.projects-popup__controls .slider-nav .slider-prev {
-  color: #000;
-  border-color: #000;
-}
 .projects-popup__image {
-  margin-top: auto;
-  width: 26.25rem;
-  aspect-ratio: 1/1;
+  flex: 1;
+  width: 100%;
   height: auto;
   position: relative;
   background: #f2f2f2;
@@ -1220,6 +1214,7 @@ Projects popup
 }
 @media (width < 61.25rem) {
   .projects-popup__image {
+    flex: 0 1 20rem;
     width: 20rem;
     height: 20rem;
   }
