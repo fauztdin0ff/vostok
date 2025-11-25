@@ -3242,12 +3242,14 @@ Portfolio
   flex: 1;
   position: relative;
   border: 1px solid #f2f2f2;
+  background: #f2f2f2;
 }
 .portfolio__slide-anim video {
   position: absolute;
   width: 100%;
   height: 100%;
   border: 1px solid #f2f2f2;
+  background: #f2f2f2;
   object-fit: contain;
 }
 @media (width < 61.25rem) {
