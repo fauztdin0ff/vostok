@@ -398,7 +398,7 @@ if (reviewsSlider) {
 
 
 /*==========================================================================
-principles slider
+portfolio slider
 ============================================================================*/
 const portfolioSlider = document.querySelector(".portfolio__slider");
 
@@ -428,6 +428,46 @@ if (portfolioSlider) {
    });
 }
 
+const videos = document.querySelectorAll('.portfolio__slide video');
+const breakpoint = 980;
+
+function setVideoBehavior() {
+   const isDesktop = window.innerWidth >= breakpoint;
+
+   videos.forEach(video => {
+
+      video.pause();
+      video.currentTime = 0;
+      video.loop = false;
+      video.removeAttribute('autoplay');
+
+      const parent = video.closest('.portfolio__slide');
+
+      parent.onmouseenter = null;
+      parent.onmouseleave = null;
+
+      if (isDesktop) {
+         parent.onmouseenter = () => {
+            video.currentTime = 0;
+            video.play();
+         };
+
+         parent.onmouseleave = () => {
+            video.pause();
+            video.currentTime = 0;
+         };
+
+      } else {
+         video.loop = true;
+         video.setAttribute('autoplay', 'true');
+         video.play();
+      }
+
+   });
+}
+
+setVideoBehavior();
+window.addEventListener('resize', setVideoBehavior);
 
 
 /*==========================================================================

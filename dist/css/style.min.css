@@ -3198,6 +3198,7 @@ Portfolio
   justify-content: space-between;
   padding: 1.125rem;
   position: relative;
+  cursor: pointer;
 }
 @media (width < 61.25rem) {
   .portfolio__slide {
