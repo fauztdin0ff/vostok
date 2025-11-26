@@ -2520,8 +2520,7 @@ Goal
   }
 }
 .goal__card {
-  padding: 5rem 5.75rem 2.3125rem 5rem;
-  background: var(--color-primary);
+  background: #b4d8cb;
 }
 @media (width < 61.25rem) {
   .goal__card {
@@ -2549,7 +2548,7 @@ Goal
 .goal__info {
   display: flex;
   justify-content: space-between;
-  gap: 5rem;
+  gap: 2rem;
 }
 @media (width < 61.25rem) {
   .goal__info {
@@ -2559,7 +2558,12 @@ Goal
 }
 .goal__text {
   font-size: 1.5rem;
+  flex: 0 1 50%;
   line-height: 120%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-left: 5rem;
 }
 .goal__text p {
   max-width: 32.5rem;
@@ -2581,10 +2585,13 @@ Goal
   }
 }
 .goal__image {
-  flex: 0 1 407px;
+  flex: 0 1 50%;
 }
-.goal__image img {
-  mix-blend-mode: multiply;
+.goal__image img,
+.goal__image video {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
 }
 @media (width < 61.25rem) {
   .goal__image {
@@ -3116,6 +3123,7 @@ Teammates
     padding: 1.5rem;
     display: block;
     width: 100%;
+    min-height: 18.125rem;
   }
 }
 
