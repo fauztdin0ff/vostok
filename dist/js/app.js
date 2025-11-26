@@ -1092,6 +1092,27 @@ if (smiSlider) {
    });
 }
 
+document.addEventListener("DOMContentLoaded", () => {
+   const prepositions = [
+      "в", "во", "на", "к", "ко", "с", "со", "от", "до", "за", "об", "обо",
+      "для", "у", "о", "под", "над", "при", "про", "без", "из", "по"
+   ];
+
+   const regex = new RegExp(`\\b(${prepositions.join("|")})\\s+`, "gi");
+
+   function replacePrepositions(node) {
+      node.childNodes.forEach(child => {
+         if (child.nodeType === 3) { // текстовый узел
+            child.nodeValue = child.nodeValue.replace(regex, (_, p1) => p1 + "\u00A0");
+         } else if (child.nodeType === 1 && !["SCRIPT", "STYLE", "CODE", "PRE"].includes(child.tagName)) {
+            replacePrepositions(child);
+         }
+      });
+   }
+
+   replacePrepositions(document.body);
+});
+
 })();
 
 /******/ })()
