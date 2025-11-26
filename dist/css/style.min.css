@@ -1152,6 +1152,7 @@ Projects popup
     width: 90%;
     gap: 3rem;
     min-height: unset;
+    height: auto;
   }
 }
 @media (width < 61.25rem) {
@@ -1967,6 +1968,7 @@ Team section
   flex: 0 0 40%;
   line-height: 120%;
   font-size: 1.875rem;
+  white-space: nowrap;
 }
 @media (width < 75rem) {
   .case__details-row span {
@@ -4019,8 +4021,8 @@ Smi
 .smi__slider {
   min-width: 0;
   width: 100%;
-  height: 42.0625rem;
-  padding-bottom: 16.4375rem;
+  height: 51.25rem;
+  padding-bottom: 25.625rem;
 }
 .smi__slider .swiper-wrapper {
   transition-timing-function: cubic-bezier(0.8, 0, 0, 0.8) !important;
@@ -4036,7 +4038,7 @@ Smi
   display: flex;
   align-items: flex-start;
   gap: 5rem;
-  height: 410px;
+  height: 25.625rem;
   opacity: 0.4;
   transition: all 0.4s ease;
 }
