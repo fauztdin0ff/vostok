@@ -3206,6 +3206,7 @@ Portfolio
   .portfolio__slider {
     width: 100vw;
     margin-left: -8px;
+    pointer-events: none;
   }
 }
 .portfolio__slide {
