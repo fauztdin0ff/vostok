@@ -1139,6 +1139,19 @@ Projects popup
   min-width: 0;
   width: 100%;
 }
+.projects-popup__controls {
+  margin-top: 2.25rem;
+  max-width: 80rem;
+  margin-inline: auto;
+}
+@media (width < 1400px) {
+  .projects-popup__controls {
+    width: 90%;
+  }
+}
+.projects-popup__controls .slider-nav {
+  justify-content: end;
+}
 .projects-popup__slide {
   width: 80rem;
   padding: 3.5rem 5rem;
@@ -2454,7 +2467,7 @@ Principles
 }
 @media (width < 47.9375rem) {
   .principles__body {
-    padding: 7.5rem 0;
+    padding: 5rem 0;
   }
 }
 .principles__title {
@@ -2520,7 +2533,13 @@ Goal
   }
 }
 .goal__card {
-  background: #b4d8cb;
+  background: var(--color-primary);
+  padding: 3.75rem 5rem;
+}
+@media (width < 1200px) {
+  .goal__card {
+    padding: 3.5rem;
+  }
 }
 @media (width < 61.25rem) {
   .goal__card {
@@ -2563,13 +2582,17 @@ Goal
   display: flex;
   flex-direction: column;
   justify-content: center;
-  padding-left: 5rem;
 }
 .goal__text p {
   max-width: 32.5rem;
 }
 .goal__text p:not(:last-child) {
   margin-bottom: 1rem;
+}
+@media (width < 1200px) {
+  .goal__text {
+    padding: 0;
+  }
 }
 @media (width < 61.25rem) {
   .goal__text {
@@ -2586,12 +2609,16 @@ Goal
 }
 .goal__image {
   flex: 0 1 50%;
+  max-width: 25.4375rem;
 }
 .goal__image img,
 .goal__image video {
   width: 100%;
   height: 100%;
   object-fit: contain;
+}
+.goal__image img {
+  mix-blend-mode: multiply;
 }
 @media (width < 61.25rem) {
   .goal__image {

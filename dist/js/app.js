@@ -452,38 +452,49 @@ if (portfolioSlider) {
 const videos = document.querySelectorAll('.portfolio__slide video');
 const breakpoint = 980;
 
+let currentMode = window.innerWidth >= breakpoint ? 'desktop' : 'mobile';
+
 function setVideoBehavior() {
    const isDesktop = window.innerWidth >= breakpoint;
+   const newMode = isDesktop ? 'desktop' : 'mobile';
+
+   if (newMode === currentMode) return;
+
+   currentMode = newMode;
 
    videos.forEach(video => {
-
-      video.pause();
-      video.currentTime = 0;
-      video.loop = false;
-      video.removeAttribute('autoplay');
-
       const parent = video.closest('.portfolio__slide');
 
       parent.onmouseenter = null;
       parent.onmouseleave = null;
 
       if (isDesktop) {
+         video.pause();
+         video.currentTime = 0;
+         video.loop = false;
+         video.removeAttribute('autoplay');
+
          parent.onmouseenter = () => {
-            video.currentTime = 0;
-            video.play();
+            if (video.paused) {
+               video.currentTime = 0;
+               video.play().catch(() => { });
+            }
          };
 
          parent.onmouseleave = () => {
-            video.pause();
-            video.currentTime = 0;
+            if (!video.paused) {
+               video.pause();
+               video.currentTime = 0;
+            }
          };
 
       } else {
+         video.muted = true;
          video.loop = true;
          video.setAttribute('autoplay', 'true');
-         video.play();
-      }
 
+         video.play().catch(() => { });
+      }
    });
 }
 
@@ -855,6 +866,14 @@ document.addEventListener("DOMContentLoaded", () => {
          keyboard: {
             enabled: true,
             onlyInViewport: true
+         },
+         pagination: {
+            el: ".projects-popup__paginataion",
+            clickable: true,
+         },
+         navigation: {
+            nextEl: ".projects-popup__next",
+            prevEl: ".projects-popup__prev",
          },
          breakpoints: {
             768: {
