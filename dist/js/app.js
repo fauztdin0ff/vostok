@@ -390,7 +390,6 @@ document.addEventListener('DOMContentLoaded', () => {
       }
    }
    mobileLogic();
-   window.addEventListener('resize', mobileLogic);
 });
 
 
